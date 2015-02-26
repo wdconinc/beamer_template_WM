@@ -1,0 +1,91 @@
+\mode<presentation>
+
+%%
+\newlength{\PageMargin}
+\newlength{\PageTopMargin}
+\newlength{\PageFooter}
+\newlength{\PageFooterDate}
+\newlength{\PageFooterTitle}
+\newlength{\PageFooterPageNumber}
+\newlength{\PageWidthMinusMargins}
+\pgfmathsetlength{\PageMargin}{5pt}
+\pgfmathsetlength{\PageFooter}{10pt}
+\pgfmathsetlength{\PageTopMargin}{2*\PageMargin}
+\pgfmathsetlength{\PageWidthMinusMargins}{\the\paperwidth-3*\PageMargin}
+
+\pgfmathsetlength{\PageFooterDate}{0.25*\the\paperwidth}
+\pgfmathsetlength{\PageFooterTitle}{0.5*\the\paperwidth}
+\pgfmathsetlength{\PageFooterPageNumber}{1.75*\PageFooter}
+
+
+%% Specify the default margins
+\setbeamersize{text margin left=\PageMargin,text margin right=\PageMargin}
+
+
+%%%%%
+% Need to push frame title down below the margin
+\setbeamertemplate{frametitle}{
+%\vspace*{\PageTopMargin}\hspace*{\PageMargin}
+ %\vspace*{\PageTopMargin}%
+  %% Since we can't use insertframetitle because of expansion problems,
+  %% we have to check for this value ourselves now
+  \pgfmathsetmacro{\localTitleLineWidth}{\textwidth}
+  \pgfmathsetmacro{\localTitleContinuationWidth}{\beamer@autobreakcount>0?
+      %\widthof{\space\localTitleContinuation} : 0.0}
+      %% Until I figure out how to get the above to work, we'll just
+      %% ignore numbers :D
+      0.0 : 0.0 }
+  \pgfmathsetmacro{\localTitleWidth}{\widthof{\beamer@frametitle}+\localTitleContinuationWidth}
+  %\settowidth{\localTitleBaseWidth}{\expandafter{\romannumeral-`X}\usebeamertemplate*{frametitle continuation}}
+  %\fi}
+  %% Perform some computations
+  \pgfmathsetmacro{\localTitleRatio}{\localTitleLineWidth/\localTitleWidth)}
+  \pgfmathsetmacro{\localTitleScale}{\localTitleRatio>1 ? 1.0 : \localTitleRatio}
+  %% Now space the title from the top-left by 1mm
+  %\vspace*{1mm}\hspace*{1mm}
+  \begin{center}%
+  \scalefont{\localTitleScale}{\insertframetitle}%
+  \end{center}%
+}
+%\setbeamertemplate{frametitle}{
+%\pgfmathparse{ \textwidth/\widthof{\insertframetitle}}
+%\vspace*{\PageTopMargin}\hspace*{\PageMargin}
+%  \begin{beamercolorbox}[center]{frametitle}
+%  \ifdimgreater{\pgfmathresult pt}{1 pt}{
+%    {\usebeamerfont{frametitle}\insertframetitle}%
+%  }{
+%    {\usebeamerfont{frametitle}\scalefont{\pgfmathresult}\insertframetitle}
+%  }
+%  \end{beamercolorbox}
+%}
+
+
+
+%% Configure the footline (footer)
+\setbeamerfont{date in head/foot}{size=\fontsize{6.5}{10},series=\bfseries}
+\setbeamerfont{title in head/foot}{size=\fontsize{6.5}{10},series=\bfseries}
+\setbeamerfont{page number in head/foot}{size=\fontsize{6.5}{10},series=\bfseries}
+\setbeamertemplate{footline}{%
+%% The Left end of the footline
+\begin{minipage}[c][\PageFooter][c]{\PageFooterDate}%
+  \begin{beamercolorbox}[wd=\PageFooterDate]{date in head/foot}%
+    \hspace*{\PageFooter}\usebeamerfont{date in head/foot}\insertdate%
+  \end{beamercolorbox}%
+\end{minipage}%
+%% The middle of the footline
+\begin{minipage}[c][\PageFooter][c]{\PageFooterTitle}%
+  \begin{beamercolorbox}[center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\inserttitle%
+  \end{beamercolorbox}%
+\end{minipage}%
+\hfill%
+%% The right end of the footline
+\begin{minipage}[c][\PageFooter][c]{\PageFooterPageNumber}%
+  \begin{beamercolorbox}[center]{page number in head/foot}%
+    \usebeamerfont{page number in head/foot}%
+      \insertframenumber%
+  \end{beamercolorbox}%
+\end{minipage}%
+}
+\mode
+<all>

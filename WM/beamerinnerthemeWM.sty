@@ -1,0 +1,175 @@
+\mode<presentation>
+
+%% Pull in package requirements
+\usepackage{scalefnt}
+\usepackage{calc}
+\usepackage{etoolbox}
+\usepackage{fontspec} %% To import custom font
+
+%% Pull in the rounded inner theme
+%\useinnertheme{rounded}
+
+%% Define default fonts to use (using the "Avenir" alternative "Nunito"
+%\usefonttheme{professionalfonts} % using non standard fonts for beamer
+%\usefonttheme{serif} % default family is serif
+\usepackage{fontspec}
+\setmainfont{Nunito-Regular}
+
+%% Define dimensions we'll rely on later
+\newlength{\TitlePageTopHeight}
+\newlength{\TitlePageBottomHeight}
+\newlength{\TitlePageTopTitleHeight}
+\newlength{\TitlePageTopGraphicHeight}
+\newlength{\TitlePageTopInformationHeight}
+\newlength{\FrameBarHeight}
+\newlength{\PartPageBannerHeight}
+\newlength{\PartPageBannerWidth}
+
+\pgfmathsetlength{\TitlePageTopHeight}{(2/3)*\the\paperheight}
+\pgfmathsetlength{\TitlePageBottomHeight}{\the\paperheight-\TitlePageTopHeight}
+
+\pgfmathsetlength{\TitlePageTopTitleHeight}{0.475*\TitlePageTopHeight}
+\pgfmathsetlength{\TitlePageTopInformationHeight}{0.475*\TitlePageTopHeight}
+\pgfmathsetlength{\TitlePageTopGraphicHeight}{0.05*\TitlePageTopHeight}
+\pgfmathsetlength{\PartPageBannerHeight}{0.55*\the\paperheight}
+\pgfmathsetlength{\PartPageBannerWidth}{\PartPageBannerHeight*1.54208274}
+
+% Font for the presentation title
+\setbeamerfont{title}{size=\fontsize{24.88}{10},series=\bfseries}
+
+% Font of the frame titles
+\setbeamerfont{frametitle}{size=\fontsize{20.74}{10},series=\bfseries}
+
+% Font of the frame titles
+\setbeamerfont{part number}{size=\fontsize{15.50}{10},series=\bfseries}
+
+
+%%
+%% Define the frame backgrounds. A toggle determines the
+%% type of background that we will draw
+%% 
+\newtoggle{istitlepage}
+\newtoggle{ispartpage}
+\setbeamertemplate{background}{
+
+\begin{tikzpicture}
+  %% Bound picture to the entire page
+  \useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+
+  %% Clear the entire background and paint it to WMWhite
+  \fill[color=WMWhite,opacity=1] (0,0) rectangle(\the\paperwidth,\the\paperheight);
+  
+  \iftoggle{istitlepage}{ %% We are in the title page.
+
+    \fill[color=WMGreen] (0, \TitlePageBottomHeight) rectangle (\the\paperwidth,\the\paperheight);
+  
+    \fill[color=WMSilver] (0, \TitlePageBottomHeight+\PageMargin/4.0) rectangle ++(\the\paperwidth, \PageMargin/2.0);
+  }{ %% We are *not* in the title page
+    \iftoggle{ispartpage}{ %% We are in the part page
+      \node[opacity=0.75] at (\the\paperwidth-\PartPageBannerWidth/2.0,\PartPageBannerHeight/2.0+\PageMargin) { \includegraphics[height=\PartPageBannerHeight]{wm_weathervane_silver.png}};
+      \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
+      \fill[color=WMGreen] (0, \PageMargin) rectangle (\the\paperwidth, 0);
+    } { %% We are *not* in the part page
+      \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
+%        \fill[color=WMGreen] (0, \PageFooter) rectangle (\the\paperwidth, 0);
+      \draw[WMGreen,ultra thick] (0,\PageFooter) -- ++(\the\paperwidth,0.0);
+      \fill[color=WMGreen] (\the\paperwidth,0) -- ++(0,\PageFooter) -- ++(-1.75*\PageFooter,0) -- ++(-\PageFooter/2.,-\PageFooter/2.0) -- ++(\PageFooter/2.,-\PageFooter/2.0) -- ++(1.75*\PageFooter,0);
+    }
+  }
+  %% Before we leave, flip the state. This will be flipped again next time
+  %% this is called.
+  \global\togglefalse{istitlepage}
+  \global\togglefalse{ispartpage}
+  \end{tikzpicture}
+}
+
+%%% Define a new beamer type (event)
+\def\event{\@dblarg\beamer@event} \long\def\beamer@event[#1]#2{%
+\def\insertevent{\def\inst{\beamer@insttitle}\def\and{\beamer@andtitle}#2}%
+  \def\beamer@shortauthor{#1}%
+  \ifbeamer@autopdfinfo%                    
+  \def\beamer@andstripped{}%
+  \beamer@stripands#2 \and\relax
+  {\let\inst=\@gobble\let\thanks=\@gobble\def\and{, }\hypersetup{pdfauthor={\beamer@andstripped}}}
+  \fi%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the title page
+\defbeamertemplate*{title page}{WM}[1][]
+{
+\global\toggletrue{istitlepage}
+\begin{minipage}[c][\TitlePageTopTitleHeight][c]{\PageWidthMinusMargins}
+  \vfill
+  \vskip0.25em
+  \pgfmathparse{\textwidth/\widthof{\inserttitle}}
+  \begin{beamercolorbox}[center]{title page header}
+  \ifdimgreater{\pgfmathresult pt}{1 pt}{
+    {\usebeamerfont{title}\inserttitle}%
+  }{
+    {\usebeamerfont{title}\scalefont{\pgfmathresult}\inserttitle}
+  }
+    \par
+    \ifx\insertsubtitle\@empty
+    \else
+      \vskip0.25em
+      \ifdimgreater{\pgfmathresult pt}{1 pt}{
+        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle}
+      }{
+        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\scalefont{\pgfmathresult}\insertsubtitle}
+      }
+    \fi
+  \end{beamercolorbox}
+  \vfill
+  \vspace{\PageMargin}
+\end{minipage}
+\begin{minipage}[t][\TitlePageTopGraphicHeight][t]{\PageWidthMinusMargins}
+\ \\
+\vfill
+\ \\
+\end{minipage}
+\begin{minipage}[t][\TitlePageTopInformationHeight][t]{\PageWidthMinusMargins}
+  \vfill
+  \begin{beamercolorbox}[center]{author}
+    \usebeamerfont{author}\insertauthor
+  \end{beamercolorbox}
+  \begin{beamercolorbox}[center]{institute}
+    \usebeamerfont{institute}\insertinstitute
+  \end{beamercolorbox}
+  \vspace{0.75em}
+  \begin{beamercolorbox}[center]{date}
+    \usebeamerfont{date}\insertdate
+  \end{beamercolorbox}
+  \begin{beamercolorbox}[center]{event}
+    %\usebeamerfont{date}\insertevent
+  \end{beamercolorbox}
+  \vfill
+%  \Tiny{This material is based upon work supported in part by the National Science Foundation under Grant No. PHY1206053}
+  \vspace{\PageMargin}
+\end{minipage}
+\begin{minipage}[t][\TitlePageBottomHeight][t]{\textwidth}
+ \vspace{0.1\TitlePageBottomHeight}\centering
+ \includegraphics[height=0.60\TitlePageBottomHeight]{wm_vertical_single_line_full_color}
+\end{minipage}
+}
+%% End title page
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the part page
+\defbeamertemplate*{part page}{WM}[1][]%
+{%
+\global\toggletrue{ispartpage}%
+\vspace{2.5em}%
+\begin{beamercolorbox}{part number}%
+  \usebeamerfont{part number}Part~\insertromanpartnumber%
+\end{beamercolorbox}%
+\vspace{0.5em}%
+\begin{beamercolorbox}{frametitle}%
+  \usebeamerfont{frametitle}\insertpart%
+\end{beamercolorbox}%
+}
+
+
+\mode
+<all>

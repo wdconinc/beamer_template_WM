@@ -1,0 +1,34 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  File: beamerthemeWM.sty
+%%  Summary:
+%%
+%%  Revisions:
+%%  - 
+%%  * 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Defining the preamble (presentation mode)
+\mode<presentation>
+
+%% Pull in required packages first
+\RequirePackage{tikz}
+
+%% Load the sub-themes
+\useinnertheme{WM}
+\useoutertheme{WM}
+\usecolortheme{WM}
+
+%% Now configure some defaults
+
+%% We want no navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+%% Get rid of the ugly shadows on blocks
+\setbeamertemplate{blocks}[rounded][shadow=false]  
+
+%% I want my bullets to be simple circles
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{itemize subsubitem}[circle]
+
+\mode<all>
