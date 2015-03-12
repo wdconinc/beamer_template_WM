@@ -73,16 +73,23 @@
       \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
       \fill[color=WMGreen] (0, \PageMargin) rectangle (\the\paperwidth, 0);
     } { %% We are *not* in the part page
+      \iftoggle{isbackuppage}{ %% We are in the backup page
+        \node[opacity=0.75] at (\the\paperwidth/2.0,\PartPageBannerHeight/2.0+\PageMargin) { \includegraphics[height=\PartPageBannerHeight]{wm_crim_dell_silver.png}};
       \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
+      \fill[color=WMGreen] (0, \PageMargin) rectangle (\the\paperwidth, 0);
+      } { %% We are *not* in the backup page
+        \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
 %        \fill[color=WMGreen] (0, \PageFooter) rectangle (\the\paperwidth, 0);
-      \draw[WMGreen,ultra thick] (0,\PageFooter) -- ++(\the\paperwidth,0.0);
-      \fill[color=WMGreen] (\the\paperwidth,0) -- ++(0,\PageFooter) -- ++(-1.75*\PageFooter,0) -- ++(-\PageFooter/2.,-\PageFooter/2.0) -- ++(\PageFooter/2.,-\PageFooter/2.0) -- ++(1.75*\PageFooter,0);
+        \draw[WMGreen,ultra thick] (0,\PageFooter) -- ++(\the\paperwidth,0.0);
+        \fill[color=WMGreen] (\the\paperwidth,0) -- ++(0,\PageFooter) -- ++(-1.75*\PageFooter,0) -- ++(-\PageFooter/2.,-\PageFooter/2.0) -- ++(\PageFooter/2.,-\PageFooter/2.0) -- ++(1.75*\PageFooter,0);
+      }
     }
   }
   %% Before we leave, flip the state. This will be flipped again next time
   %% this is called.
   \global\togglefalse{istitlepage}
   \global\togglefalse{ispartpage}
+  \global\togglefalse{isbackuppage}
   \end{tikzpicture}
 }
 
@@ -159,7 +166,7 @@
 %% End title page
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Define the part page
+%% Define the default part page
 \defbeamertemplate*{part page}{WM}[1][]%
 {%
 \global\toggletrue{ispartpage}%
@@ -173,6 +180,48 @@
 \end{beamercolorbox}%
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the backups page
+\defbeamertemplate*{backups page}{WM}[1][]%
+{%
+\global\toggletrue{isbackuppage}%
+\begin{beamercolorbox}{frametitle}%
+  \begin{center}%
+  \usebeamerfont{frametitle}Backup Slides%
+  \end{center}%
+\end{beamercolorbox}%
+}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the backups page
+\defbeamertemplate*{title only page}{WM}[2][]%
+{%
+\global\toggletrue{isbackuppage}%
+\begin{beamercolorbox}{frametitle}%
+  \begin{center}%
+  \usebeamerfont{frametitle}THANK YOU!%
+  \end{center}%
+\end{beamercolorbox}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the footnote rule
+\renewcommand*{\footnoterule}{
+\begin{tikzpicture}%
+  \draw[WMSilver,thick] (0,\PageFooter) -- ++(\the\paperwidth,0.0);%
+\end{tikzpicture}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the footnote theme
+\defbeamertemplate*{footnote}{WM}[1][]%
+{
+  \begin{beamercolorbox}[right]{footnote}%
+  \usebeamerfont{footnote}
+  %\parindent 1em\noindent%
+  %\raggedright
+  \hbox to 1.8em{\hfil\insertfootnotemark}\insertfootnotetext\par%
+  \end{beamercolorbox}%
+}
 \mode
 <all>
