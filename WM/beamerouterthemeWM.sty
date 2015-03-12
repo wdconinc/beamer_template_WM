@@ -31,10 +31,7 @@
   %% we have to check for this value ourselves now
   \pgfmathsetmacro{\localTitleLineWidth}{\textwidth}
   \pgfmathsetmacro{\localTitleContinuationWidth}{\beamer@autobreakcount>0?
-      %\widthof{\space\localTitleContinuation} : 0.0}
-      %% Until I figure out how to get the above to work, we'll just
-      %% ignore numbers :D
-      0.0 : 0.0 }
+      \widthof{\space\insertcontinuationcountroman} : 0.0}
   \pgfmathsetmacro{\localTitleWidth}{\widthof{\beamer@frametitle}+\localTitleContinuationWidth}
   %\settowidth{\localTitleBaseWidth}{\expandafter{\romannumeral-`X}\usebeamertemplate*{frametitle continuation}}
   %\fi}
@@ -47,19 +44,6 @@
   \scalefont{\localTitleScale}{\insertframetitle}%
   \end{center}%
 }
-%\setbeamertemplate{frametitle}{
-%\pgfmathparse{ \textwidth/\widthof{\insertframetitle}}
-%\vspace*{\PageTopMargin}\hspace*{\PageMargin}
-%  \begin{beamercolorbox}[center]{frametitle}
-%  \ifdimgreater{\pgfmathresult pt}{1 pt}{
-%    {\usebeamerfont{frametitle}\insertframetitle}%
-%  }{
-%    {\usebeamerfont{frametitle}\scalefont{\pgfmathresult}\insertframetitle}
-%  }
-%  \end{beamercolorbox}
-%}
-
-
 
 %% Configure the footline (footer)
 \setbeamerfont{date in head/foot}{size=\fontsize{6.5}{10},series=\bfseries}
