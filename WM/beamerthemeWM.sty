@@ -31,4 +31,43 @@
 \setbeamertemplate{itemize subitem}[circle]
 \setbeamertemplate{itemize subsubitem}[circle]
 
+
+%% Define a new slide environments
+
+%% quoteframe slide
+%% Borrrowed from http://tex.stackexchange.com/a/52319
+% The big quotes
+\newcommand*\bigQuotefont{\fontfamily{fxl}} % selects Libertine for quote font
+
+\newcommand*{\bigQuoteOpening}{%
+        \tikz[%
+            remember picture,%
+            overlay,%
+            xshift=-15pt,%
+            yshift=-10pt%
+        ]
+        \node (OQ) {\bigQuotefont\fontsize{60}{60}\selectfont``}; 
+        \kern0pt 
+    }
+    \newcommand*{\bigQuoteClosing}{%
+       \tikz[
+            remember picture,
+            overlay,
+            xshift=15pt,
+            yshift=-10pt
+        ]
+        \node (CQ) {\bigQuotefont\fontsize{60}{60}\selectfont''}; 
+    }
+\newenvironment{quoteframe}[1]{%
+  \begin{frame}[plain,fragile,environment=quoteframe]{#1}%
+  \global\toggletrue{isquotepage}%
+  \begin{minipage}[c]{0.65\textwidth}%
+  \begin{quote}\bigQuoteOpening%
+}{%
+  \hfill\bigQuoteClosing
+  \end{quote}%
+  \end{minipage}%
+  \end{frame}%
+}%
+
 \mode<all>

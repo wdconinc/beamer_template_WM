@@ -63,7 +63,12 @@
 \newtoggle{istitlepage}
 \newtoggle{ispartpage}
 \newtoggle{isbackuppage}
+\newtoggle{isquotepage}
+\newtoggle{isnormalpage}
 \setbeamertemplate{background}{
+
+%% First let's pretend we are in the normal page
+\global\toggletrue{isnormalpage}%
 
 \begin{tikzpicture}
   %% Bound picture to the entire page
@@ -71,35 +76,57 @@
 
   %% Clear the entire background and paint it to WMWhite
   \fill[color=WMWhite,opacity=1] (0,0) rectangle(\the\paperwidth,\the\paperheight);
-  
-  \iftoggle{istitlepage}{ %% We are in the title page.
 
+  %% Check for title page  
+  \iftoggle{istitlepage}{
+    \global\togglefalse{isnormalpage} % Disable normal page 
+    
     \fill[color=WMGreen] (0, \TitlePageBottomHeight) rectangle (\the\paperwidth,\the\paperheight);
   
     \fill[color=WMSilver] (0, \TitlePageBottomHeight+\PageMargin/4.0) rectangle ++(\the\paperwidth, \PageMargin/2.0);
-  }{ %% We are *not* in the title page
-    \iftoggle{ispartpage}{ %% We are in the part page
-      \node[opacity=0.75] at (\the\paperwidth-\PartPageBannerWidth/2.0,\PartPageBannerHeight/2.0+\PageMargin) { \includegraphics[height=\PartPageBannerHeight]{wm_weathervane_silver.png}};
-      \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
+  }{}%
+  
+  %% Check if we are in the part page
+  \iftoggle{ispartpage}{%
+    \global\togglefalse{isnormalpage} % Disable normal page
+    
+    \node[opacity=0.75] at (\the\paperwidth-\PartPageBannerWidth/2.0,\PartPageBannerHeight/2.0+\PageMargin) { \includegraphics[height=\PartPageBannerHeight]{wm_weathervane_silver.png}};
+    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
+    \fill[color=WMGreen] (0, \PageMargin) rectangle (\the\paperwidth, 0);
+  }{}%
+    
+  %% Check if we are in the backup page
+  \iftoggle{isbackuppage}{%
+    \global\togglefalse{isnormalpage} % Disable normal page
+    
+    \node[opacity=0.75] at (\the\paperwidth/2.0,\PartPageBannerHeight/2.0+\PageMargin) { \includegraphics[height=\PartPageBannerHeight]{wm_crim_dell_silver.png}};
+    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
+    \fill[color=WMGreen] (0, \PageMargin) rectangle (\the\paperwidth, 0);
+  }{}%
+  
+  %% Check if we are in the quote page
+  \iftoggle{isquotepage}{%
+    \global\togglefalse{isnormalpage} % Disable normal page
+    
+    \node[opacity=0.75] at (\the\paperwidth,\the\paperheight/2) { \includegraphics[height=\the\paperheight]{wm_cypher_silver.png}};
+    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
       \fill[color=WMGreen] (0, \PageMargin) rectangle (\the\paperwidth, 0);
-    } { %% We are *not* in the part page
-      \iftoggle{isbackuppage}{ %% We are in the backup page
-        \node[opacity=0.75] at (\the\paperwidth/2.0,\PartPageBannerHeight/2.0+\PageMargin) { \includegraphics[height=\PartPageBannerHeight]{wm_crim_dell_silver.png}};
-      \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
-      \fill[color=WMGreen] (0, \PageMargin) rectangle (\the\paperwidth, 0);
-      } { %% We are *not* in the backup page
-        \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
+  }{}%
+  
+  %% Finally, check if we are in the normal page
+  \iftoggle{isnormalpage}{%
+    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
 %        \fill[color=WMGreen] (0, \PageFooter) rectangle (\the\paperwidth, 0);
-        \draw[WMGreen,ultra thick] (0,\PageFooter) -- ++(\the\paperwidth,0.0);
-        \fill[color=WMGreen] (\the\paperwidth,0) -- ++(0,\PageFooter) -- ++(-1.75*\PageFooter,0) -- ++(-\PageFooter/2.,-\PageFooter/2.0) -- ++(\PageFooter/2.,-\PageFooter/2.0) -- ++(1.75*\PageFooter,0);
-      }
-    }
+    \draw[WMGreen,ultra thick] (0,\PageFooter) -- ++(\the\paperwidth,0.0);
+    \fill[color=WMGreen] (\the\paperwidth,0) -- ++(0,\PageFooter) -- ++(-1.75*\PageFooter,0) -- ++(-\PageFooter/2.,-\PageFooter/2.0) -- ++(\PageFooter/2.,-\PageFooter/2.0) -- ++(1.75*\PageFooter,0);
   }
+  
   %% Before we leave, flip the state. This will be flipped again next time
   %% this is called.
   \global\togglefalse{istitlepage}
   \global\togglefalse{ispartpage}
   \global\togglefalse{isbackuppage}
+  \global\togglefalse{isquotepage}
   \end{tikzpicture}
 }
 
@@ -233,5 +260,17 @@
   \hbox to 1.8em{\hfil\insertfootnotemark}\insertfootnotetext\par%
   \end{beamercolorbox}%
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the special quote slide
+\defbeamertemplate*{quote slide}{WM}[1]%
+%{%
+%}%
+%[]%
+{%
+\global\toggletrue{isquotepage}%
+}%
+
+
 \mode
 <all>

@@ -1,20 +1,67 @@
 \documentclass[xcolor=table,compress,pdfpagelabels]{beamer}
 
+\newcommand{\thisDocumentVersion}{0.2}
+
 %%----------- CONFIGURE BEAMER ------------%%
 \mode<presentation> {
   \usetheme{WM}
 }
 
 \author{Juan Carlos Cornejo}
-\title{W\&M Beamer Theme}
+\title{W\&M Beamer Theme User Guide}
+\subtitle{Version: \thisDocumentVersion}
 \institute{The College of William \& Mary}
 \date{March 12, 2015}
 
 \begin{document}
 
-%%---------------- Title Page -------------------%%
 \begin{frame}[plain]
  \titlepage
 \end{frame}
 
+%\begin{frame}{Guide Outline}
+%  \tableofcontents
+%\end{frame}
+
+\section{Introduction}
+\begin{frame}{Introduction}
+\begin{center}
+\end{center}
+\end{frame}
+
+\begin{quoteframe}{Why use this theme?}
+William \& Mary's distinction as a leader in American education is over 300 years strong. Growth of the William \& Mary brand in the 21st century requires consistent and thoughtful stewardship of university visuals.\\
+\ \hfill--W\&M Styleguide 1.0
+\end{quoteframe}
+
+\begin{frame}[fragile]{Getting and Using the W\&M Beamer Theme}
+\begin{enumerate}
+  \item First, get a copy of the theme from the GitHub page
+  \begin{itemize}
+    \item https://github.com/leadmocha/beamer\_template\_WM
+  \end{itemize}
+  \item Extract the contents in the base of your LaTeX project
+  \item Select the theme in your preamble
+  \begin{verbatim}
+    \documentclass[]{beamer}
+    ...
+    \mode<presentation> {
+      \usetheme{WM}
+    }
+    ...
+    \begin{document}
+  \end{verbatim}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Special Slides}
+ A Quote only slide use:
+  \begin{verbatim}
+  \begin{quoteframe}{Optional Title Here}
+    Quote Here\\
+    --Author here
+  \end{quoteframe}
+  \end{verbatim}
+ 
+\end{frame}
 \end{document}
