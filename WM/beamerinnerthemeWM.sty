@@ -43,6 +43,8 @@
 % Font of the frame titles
 \setbeamerfont{part number}{size=\fontsize{15.50}{10},series=\bfseries}
 
+% Font of the footnotes
+\setbeamerfont{footnote}{size=\fontsize{8.00}{10},series=\itshape}
 
 %%
 %% Define the frame backgrounds. A toggle determines the
@@ -50,6 +52,7 @@
 %% 
 \newtoggle{istitlepage}
 \newtoggle{ispartpage}
+\newtoggle{isbackuppage}
 \setbeamertemplate{background}{
 
 \begin{tikzpicture}
