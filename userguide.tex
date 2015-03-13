@@ -4,7 +4,7 @@
 
 %%----------- CONFIGURE BEAMER ------------%%
 \mode<presentation> {
-  \usetheme{WM}
+  \usetheme[numberbyframe]{WM}
 }
 
 \author{Juan Carlos Cornejo}
@@ -52,6 +52,24 @@ William \& Mary's distinction as a leader in American education is over 300 year
     \begin{document}
   \end{verbatim}
 \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Frame vs Page Numbers}
+Beamer allows transitions, which begs the question...\\
+\begin{block}{}
+\begin{center}How should I number my slides?\end{center}
+\end{block}
+Two possible options exist
+\begin{itemize}
+  \item numberbyframe
+  \item numberbypage \structure{(default)}
+\end{itemize}
+The difference is that page numbers \alert{increase} with transitions and frames do not.
+\begin{example}
+\begin{center}
+This is Frame \alert{1} Page \alert{\only<1>{1}\only<2>{2}}.
+\end{center}
+\end{example}
 \end{frame}
 
 \begin{frame}[fragile]{Special Slides}

@@ -7,6 +7,15 @@
 %% Author: Juan Carlos Cornejo <jccornejo@email.wm.edu>
 %% http://wmpeople.wm.edu/site/page/jccornejo/
 
+%% Define our options (none for now)
+%% Fallback - Pass unknown options to the book class
+\DeclareOptionBeamer{numberbyframe}{
+  \PassOptionsToPackage{numberbyframe}{beamerouterthemeWM}%
+}
+
+%% Now process the options
+\ProcessOptionsBeamer\relax
+
 %% Define preamble
 \mode<presentation>
 
