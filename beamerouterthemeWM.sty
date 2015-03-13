@@ -7,7 +7,16 @@
 %% Author: Juan Carlos Cornejo <jccornejo@email.wm.edu>
 %% http://wmpeople.wm.edu/site/page/jccornejo/
 
-%% Define preamble
+%% Global toggles first
+\newtoggle{numberbyframe}
+
+%% Declare and process Beamer options
+\DeclareOptionBeamer{numberbyframe}[true]{\global\toggletrue{numberbyframe}}
+\DeclareOptionBeamer{numberbypage}{\global\togglefalse{numberbyframe}}
+\ExecuteOptionsBeamer{numberbypage}
+\ProcessOptionsBeamer\relax
+
+%% Define presentation mode settings
 \mode<presentation>
 
 %%
@@ -76,7 +85,7 @@
 \begin{minipage}[c][\PageFooter][c]{\PageFooterPageNumber}%
   \begin{beamercolorbox}[center]{page number in head/foot}%
     \usebeamerfont{page number in head/foot}%
-      \insertpagenumber%
+    \iftoggle{numberbyframe}{\insertframenumber}{\insertpagenumber}%
   \end{beamercolorbox}%
 \end{minipage}%
 }
