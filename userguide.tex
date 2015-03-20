@@ -74,13 +74,27 @@ This is Frame \alert{1} Page \alert{\only<1>{1}\only<2>{2}}.
 \end{frame}
 
 \begin{frame}[fragile]{Special Slides}
- A Quote only slide use:
+ A slide with half content half W\&M Crest:
+  \begin{verbatim}
+  \begin{crestframe}{Optional Title Here}
+    Slide content goes here
+  \end{crestframe}
+  \end{verbatim}
+ 
+  A Quote only slide use:
   \begin{verbatim}
   \begin{quoteframe}{Optional Title Here}
     Quote Here\\
     --Author here
   \end{quoteframe}
   \end{verbatim}
- 
 \end{frame}
+
+\begin{crestframe}{Special Slide: Crest Frame}
+\begin{itemize}
+\item Will use up only 60\% of the frame
+\item Crest is on the right
+\item Similar to Quote frame
+\end{itemize}
+\end{crestframe}
 \end{document}

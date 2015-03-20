@@ -69,12 +69,21 @@
     }
 \newenvironment{quoteframe}[1]{%
   \begin{frame}[plain,fragile,environment=quoteframe]{#1}%
-  \global\toggletrue{isquotepage}%
+  \global\toggletrue{iscrestpage}%
   \begin{minipage}[c]{0.65\textwidth}%
   \begin{quote}\bigQuoteOpening%
 }{%
   \hfill\bigQuoteClosing
   \end{quote}%
+  \end{minipage}%
+  \end{frame}%
+}%
+
+\newenvironment{crestframe}[1]{%
+  \begin{frame}[plain,fragile,environment=crestframe]{#1}%
+  \global\toggletrue{iscrestpage}%
+  \begin{minipage}[c]{0.60\textwidth}%
+}{%
   \end{minipage}%
   \end{frame}%
 }%

@@ -37,9 +37,10 @@
 \newlength{\TitlePageTopTitleHeight}
 \newlength{\TitlePageTopGraphicHeight}
 \newlength{\TitlePageTopInformationHeight}
-\newlength{\FrameBarHeight}
+\newlength{\PlainFrameBarHeight}
 \newlength{\PartPageBannerHeight}
 \newlength{\PartPageBannerWidth}
+\newlength{\CrestPageContentHeight}
 
 \pgfmathsetlength{\TitlePageTopHeight}{(2/3)*\the\paperheight}
 \pgfmathsetlength{\TitlePageBottomHeight}{\the\paperheight-\TitlePageTopHeight}
@@ -49,6 +50,8 @@
 \pgfmathsetlength{\TitlePageTopGraphicHeight}{0.05*\TitlePageTopHeight}
 \pgfmathsetlength{\PartPageBannerHeight}{0.55*\the\paperheight}
 \pgfmathsetlength{\PartPageBannerWidth}{\PartPageBannerHeight*1.54208274}
+\pgfmathsetlength{\PlainFrameBarHeight}{5pt}
+\pgfmathsetlength{\CrestPageContentHeight}{\the\paperheight-2*\PlainFrameBarHeight}
 
 % Font for the presentation title
 \setbeamerfont{title}{size=\fontsize{24.88}{10},series=\bfseries}
@@ -69,7 +72,7 @@
 \newtoggle{istitlepage}
 \newtoggle{ispartpage}
 \newtoggle{isbackuppage}
-\newtoggle{isquotepage}
+\newtoggle{iscrestpage}
 \newtoggle{isnormalpage}
 \setbeamertemplate{background}{
 
@@ -89,39 +92,39 @@
     
     \fill[color=WMGreen] (0, \TitlePageBottomHeight) rectangle (\the\paperwidth,\the\paperheight);
   
-    \fill[color=WMSilver] (0, \TitlePageBottomHeight+\PageMargin/4.0) rectangle ++(\the\paperwidth, \PageMargin/2.0);
+    \fill[color=WMSilver] (0, \TitlePageBottomHeight+\PlainFrameBarHeight/4.0) rectangle ++(\the\paperwidth, \PlainFrameBarHeight/2.0);
   }{}%
   
   %% Check if we are in the part page
   \iftoggle{ispartpage}{%
     \global\togglefalse{isnormalpage} % Disable normal page
     
-    \node[opacity=0.75] at (\the\paperwidth-\PartPageBannerWidth/2.0,\PartPageBannerHeight/2.0+\PageMargin) { \includegraphics[height=\PartPageBannerHeight]{wm_weathervane_silver.png}};
-    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
-    \fill[color=WMGreen] (0, \PageMargin) rectangle (\the\paperwidth, 0);
+    \node[opacity=0.75] at (\the\paperwidth-\PartPageBannerWidth/2.0,\PartPageBannerHeight/2.0+\PlainFrameBarHeight) { \includegraphics[height=\PartPageBannerHeight]{wm_weathervane_silver.png}};
+    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PlainFrameBarHeight);
+    \fill[color=WMGreen] (0, \PlainFrameBarHeight) rectangle (\the\paperwidth, 0);
   }{}%
     
   %% Check if we are in the backup page
   \iftoggle{isbackuppage}{%
     \global\togglefalse{isnormalpage} % Disable normal page
     
-    \node[opacity=0.75] at (\the\paperwidth/2.0,\PartPageBannerHeight/2.0+\PageMargin) { \includegraphics[height=\PartPageBannerHeight]{wm_crim_dell_silver.png}};
-    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
-    \fill[color=WMGreen] (0, \PageMargin) rectangle (\the\paperwidth, 0);
+    \node[opacity=0.75] at (\the\paperwidth/2.0,\PartPageBannerHeight/2.0+\PlainFrameBarHeight) { \includegraphics[height=\PartPageBannerHeight]{wm_crim_dell_silver.png}};
+    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PlainFrameBarHeight);
+    \fill[color=WMGreen] (0, \PlainFrameBarHeight) rectangle (\the\paperwidth, 0);
   }{}%
   
-  %% Check if we are in the quote page
-  \iftoggle{isquotepage}{%
+  %% Check if we are in the crest page
+  \iftoggle{iscrestpage}{%
     \global\togglefalse{isnormalpage} % Disable normal page
     
-    \node[opacity=0.75] at (\the\paperwidth,\the\paperheight/2) { \includegraphics[height=\the\paperheight]{wm_cypher_silver.png}};
-    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
-      \fill[color=WMGreen] (0, \PageMargin) rectangle (\the\paperwidth, 0);
+    \node[opacity=0.75] at (\the\paperwidth,\the\paperheight/2) { \includegraphics[height=\CrestPageContentHeight]{wm_cypher_silver.png}};
+    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PlainFrameBarHeight);
+      \fill[color=WMGreen] (0, \PlainFrameBarHeight) rectangle (\the\paperwidth, 0);
   }{}%
   
   %% Finally, check if we are in the normal page
   \iftoggle{isnormalpage}{%
-    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
+    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PlainFrameBarHeight);
 %        \fill[color=WMGreen] (0, \PageFooter) rectangle (\the\paperwidth, 0);
     \draw[WMGreen,ultra thick] (0,\PageFooter) -- ++(\the\paperwidth,0.0);
     \fill[color=WMGreen] (\the\paperwidth,0) -- ++(0,\PageFooter) -- ++(-1.75*\PageFooter,0) -- ++(-\PageFooter/2.,-\PageFooter/2.0) -- ++(\PageFooter/2.,-\PageFooter/2.0) -- ++(1.75*\PageFooter,0);
@@ -132,7 +135,7 @@
   \global\togglefalse{istitlepage}
   \global\togglefalse{ispartpage}
   \global\togglefalse{isbackuppage}
-  \global\togglefalse{isquotepage}
+  \global\togglefalse{iscrestpage}
   \end{tikzpicture}
 }
 
@@ -175,7 +178,7 @@
     \fi
   \end{beamercolorbox}
   \vfill
-  \vspace{\PageMargin}
+  \vspace{\PlainFrameBarHeight}
 \end{minipage}
 \begin{minipage}[t][\TitlePageTopGraphicHeight][t]{\PageWidthMinusMargins}
 \ \\
@@ -199,7 +202,7 @@
   \end{beamercolorbox}
   \vfill
 %  \Tiny{This material is based upon work supported in part by the National Science Foundation under Grant No. PHY1206053}
-  \vspace{\PageMargin}
+  \vspace{\PlainFrameBarHeight}
 \end{minipage}
 \begin{minipage}[t][\TitlePageBottomHeight][t]{\textwidth}
  \vspace{0.1\TitlePageBottomHeight}\centering
@@ -274,7 +277,7 @@
 %}%
 %[]%
 {%
-\global\toggletrue{isquotepage}%
+\global\toggletrue{iscrestpage}%
 }%
 
 
