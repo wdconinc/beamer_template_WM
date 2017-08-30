@@ -1,0 +1,91 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Beamer theme following the W&M Style Guide as of March 2015
+%% found at http://styleguide.wm.edu/ (may need W&M username/password to
+%% access).
+%%
+%% Author: Juan Carlos Cornejo <jccornejo@email.wm.edu>
+%% http://wmpeople.wm.edu/site/page/jccornejo/
+
+%% Define our options (none for now)
+%% Fallback - Pass unknown options to the book class
+\DeclareOptionBeamer{numberbyframe}{
+  \PassOptionsToPackage{numberbyframe}{beamerouterthemeWM}%
+}
+
+%% Now process the options
+\ProcessOptionsBeamer\relax
+
+%% Define preamble
+\mode<presentation>
+
+%% Pull in required packages first
+\RequirePackage{tikz}
+
+%% Load the sub-themes
+\useinnertheme{WM}
+\useoutertheme{WM}
+\usecolortheme{WM}
+
+%% Now configure some defaults
+
+%% We want no navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+%% Get rid of the ugly shadows on blocks
+\setbeamertemplate{blocks}[rounded][shadow=false]  
+
+%% I want my bullets to be simple circles
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{itemize subsubitem}[circle]
+
+
+%% Define a new slide environments
+
+%% quoteframe slide
+%% Borrrowed from http://tex.stackexchange.com/a/52319
+% The big quotes
+\newcommand*\bigQuotefont{\fontfamily{fxl}} % selects Libertine for quote font
+
+\newcommand*{\bigQuoteOpening}{%
+        \tikz[%
+            remember picture,%
+            overlay,%
+            xshift=-15pt,%
+            yshift=-10pt%
+        ]
+        \node (OQ) {\bigQuotefont\fontsize{60}{60}\selectfont``}; 
+        \kern0pt 
+    }
+    \newcommand*{\bigQuoteClosing}{%
+       \tikz[
+            remember picture,
+            overlay,
+            xshift=15pt,
+            yshift=-10pt
+        ]
+        \node (CQ) {\bigQuotefont\fontsize{60}{60}\selectfont''}; 
+    }
+\newenvironment{quoteframe}[1]{%
+  \begin{frame}[plain,fragile,environment=quoteframe]{#1}%
+  \global\toggletrue{iscrestpage}%
+  \begin{minipage}[c]{0.65\textwidth}%
+  \begin{quote}\bigQuoteOpening%
+}{%
+  \hfill\bigQuoteClosing
+  \end{quote}%
+  \end{minipage}%
+  \end{frame}%
+}%
+
+\newenvironment{crestframe}[1]{%
+  \begin{frame}[plain,fragile,environment=crestframe]{#1}%
+  \global\toggletrue{iscrestpage}%
+  \begin{minipage}[c]{0.60\textwidth}%
+}{%
+  \end{minipage}%
+  \end{frame}%
+}%
+
+\mode<all>

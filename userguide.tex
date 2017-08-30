@@ -1,0 +1,100 @@
+% !TEX program = lualalatex
+\documentclass[xcolor=table,compress,pdfpagelabels]{beamer}
+
+\newcommand{\thisDocumentVersion}{0.2}
+
+%%----------- CONFIGURE BEAMER ------------%%
+\mode<presentation> {
+  \usetheme[numberbyframe]{WM}
+}
+
+\author{Juan Carlos Cornejo}
+\title{W\&M Beamer Theme User Guide}
+\subtitle{Version: \thisDocumentVersion}
+\institute{The College of William \& Mary}
+\date{March 12, 2015}
+
+\begin{document}
+
+\begin{frame}[plain]
+ \titlepage
+\end{frame}
+
+%\begin{frame}{Guide Outline}
+%  \tableofcontents
+%\end{frame}
+
+\section{Introduction}
+\begin{frame}{Introduction}
+\begin{center}
+\end{center}
+\end{frame}
+
+\begin{quoteframe}{Why use this theme?}
+William \& Mary's distinction as a leader in American education is over 300 years strong. Growth of the William \& Mary brand in the 21st century requires consistent and thoughtful stewardship of university visuals.\\
+\ \hfill--W\&M Styleguide 1.0
+\end{quoteframe}
+
+\begin{frame}[fragile]{Getting and Using the W\&M Beamer Theme}
+\begin{enumerate}
+  \item First, get a copy of the theme from the GitHub page
+  \begin{itemize}
+    \item https://github.com/leadmocha/beamer\_template\_WM
+  \end{itemize}
+  \item Extract the contents in the base of your LaTeX project
+  \item Select the theme in your preamble
+  \begin{verbatim}
+    \documentclass[]{beamer}
+    ...
+    \mode<presentation> {
+      \usetheme{WM}
+    }
+    ...
+    \begin{document}
+  \end{verbatim}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Frame vs Page Numbers}
+Beamer allows transitions, which begs the question...\\
+\begin{block}{}
+\begin{center}How should I number my slides?\end{center}
+\end{block}
+Two possible options exist
+\begin{itemize}
+  \item numberbyframe
+  \item numberbypage \structure{(default)}
+\end{itemize}
+The difference is that page numbers \alert{increase} with transitions and frames do not.
+\begin{example}
+\begin{center}
+This is Frame \alert{1} Page \alert{\only<1>{1}\only<2>{2}}.
+\end{center}
+\end{example}
+\end{frame}
+
+\begin{frame}[fragile]{Special Slides}
+ A slide with half content half W\&M Crest:
+  \begin{verbatim}
+  \begin{crestframe}{Optional Title Here}
+    Slide content goes here
+  \end{crestframe}
+  \end{verbatim}
+ 
+  A Quote only slide use:
+  \begin{verbatim}
+  \begin{quoteframe}{Optional Title Here}
+    Quote Here\\
+    --Author here
+  \end{quoteframe}
+  \end{verbatim}
+\end{frame}
+
+\begin{crestframe}{Special Slide: Crest Frame}
+\begin{itemize}
+\item Will use up only 60\% of the frame
+\item Crest is on the right
+\item Similar to Quote frame
+\end{itemize}
+\end{crestframe}
+\end{document}

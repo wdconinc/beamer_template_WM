@@ -1,3 +1,19 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Beamer inner theme following the W&M Style Guide as of March 2015
+%% found at http://styleguide.wm.edu/ (may need W&M username/password to
+%% access).
+%%
+%% Author: Juan Carlos Cornejo <jccornejo@email.wm.edu>
+%% http://wmpeople.wm.edu/site/page/jccornejo/
+
+%% Define preamble
+
+%% Declare and process Beamer options
+\ExecuteOptionsBeamer{}
+\ProcessOptionsBeamer\relax
+
+%% Define presentation mode settings
 \mode<presentation>
 
 %% Pull in package requirements
@@ -21,9 +37,10 @@
 \newlength{\TitlePageTopTitleHeight}
 \newlength{\TitlePageTopGraphicHeight}
 \newlength{\TitlePageTopInformationHeight}
-\newlength{\FrameBarHeight}
+\newlength{\PlainFrameBarHeight}
 \newlength{\PartPageBannerHeight}
 \newlength{\PartPageBannerWidth}
+\newlength{\CrestPageContentHeight}
 
 \pgfmathsetlength{\TitlePageTopHeight}{(2/3)*\the\paperheight}
 \pgfmathsetlength{\TitlePageBottomHeight}{\the\paperheight-\TitlePageTopHeight}
@@ -33,6 +50,8 @@
 \pgfmathsetlength{\TitlePageTopGraphicHeight}{0.05*\TitlePageTopHeight}
 \pgfmathsetlength{\PartPageBannerHeight}{0.55*\the\paperheight}
 \pgfmathsetlength{\PartPageBannerWidth}{\PartPageBannerHeight*1.54208274}
+\pgfmathsetlength{\PlainFrameBarHeight}{5pt}
+\pgfmathsetlength{\CrestPageContentHeight}{\the\paperheight-2*\PlainFrameBarHeight}
 
 % Font for the presentation title
 \setbeamerfont{title}{size=\fontsize{24.88}{10},series=\bfseries}
@@ -43,6 +62,8 @@
 % Font of the frame titles
 \setbeamerfont{part number}{size=\fontsize{15.50}{10},series=\bfseries}
 
+% Font of the footnotes
+\setbeamerfont{footnote}{size=\fontsize{8.00}{10},series=\itshape}
 
 %%
 %% Define the frame backgrounds. A toggle determines the
@@ -50,7 +71,13 @@
 %% 
 \newtoggle{istitlepage}
 \newtoggle{ispartpage}
+\newtoggle{isbackuppage}
+\newtoggle{iscrestpage}
+\newtoggle{isnormalpage}
 \setbeamertemplate{background}{
+
+%% First let's pretend we are in the normal page
+\global\toggletrue{isnormalpage}%
 
 \begin{tikzpicture}
   %% Bound picture to the entire page
@@ -58,28 +85,57 @@
 
   %% Clear the entire background and paint it to WMWhite
   \fill[color=WMWhite,opacity=1] (0,0) rectangle(\the\paperwidth,\the\paperheight);
-  
-  \iftoggle{istitlepage}{ %% We are in the title page.
 
+  %% Check for title page  
+  \iftoggle{istitlepage}{
+    \global\togglefalse{isnormalpage} % Disable normal page 
+    
     \fill[color=WMGreen] (0, \TitlePageBottomHeight) rectangle (\the\paperwidth,\the\paperheight);
   
-    \fill[color=WMSilver] (0, \TitlePageBottomHeight+\PageMargin/4.0) rectangle ++(\the\paperwidth, \PageMargin/2.0);
-  }{ %% We are *not* in the title page
-    \iftoggle{ispartpage}{ %% We are in the part page
-      \node[opacity=0.75] at (\the\paperwidth-\PartPageBannerWidth/2.0,\PartPageBannerHeight/2.0+\PageMargin) { \includegraphics[height=\PartPageBannerHeight]{wm_weathervane_silver.png}};
-      \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
-      \fill[color=WMGreen] (0, \PageMargin) rectangle (\the\paperwidth, 0);
-    } { %% We are *not* in the part page
-      \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PageMargin);
+    \fill[color=WMSilver] (0, \TitlePageBottomHeight+\PlainFrameBarHeight/4.0) rectangle ++(\the\paperwidth, \PlainFrameBarHeight/2.0);
+  }{}%
+  
+  %% Check if we are in the part page
+  \iftoggle{ispartpage}{%
+    \global\togglefalse{isnormalpage} % Disable normal page
+    
+    \node[opacity=0.75] at (\the\paperwidth-\PartPageBannerWidth/2.0,\PartPageBannerHeight/2.0+\PlainFrameBarHeight) { \includegraphics[height=\PartPageBannerHeight]{wm_weathervane_silver.png}};
+    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PlainFrameBarHeight);
+    \fill[color=WMGreen] (0, \PlainFrameBarHeight) rectangle (\the\paperwidth, 0);
+  }{}%
+    
+  %% Check if we are in the backup page
+  \iftoggle{isbackuppage}{%
+    \global\togglefalse{isnormalpage} % Disable normal page
+    
+    \node[opacity=0.75] at (\the\paperwidth/2.0,\PartPageBannerHeight/2.0+\PlainFrameBarHeight) { \includegraphics[height=\PartPageBannerHeight]{wm_crim_dell_silver.png}};
+    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PlainFrameBarHeight);
+    \fill[color=WMGreen] (0, \PlainFrameBarHeight) rectangle (\the\paperwidth, 0);
+  }{}%
+  
+  %% Check if we are in the crest page
+  \iftoggle{iscrestpage}{%
+    \global\togglefalse{isnormalpage} % Disable normal page
+    
+    \node[opacity=0.75] at (\the\paperwidth,\the\paperheight/2) { \includegraphics[height=\CrestPageContentHeight]{wm_cypher_silver.png}};
+    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PlainFrameBarHeight);
+      \fill[color=WMGreen] (0, \PlainFrameBarHeight) rectangle (\the\paperwidth, 0);
+  }{}%
+  
+  %% Finally, check if we are in the normal page
+  \iftoggle{isnormalpage}{%
+    \fill[color=WMGreen] (0, \the\paperheight) rectangle ++(\the\paperwidth, -\PlainFrameBarHeight);
 %        \fill[color=WMGreen] (0, \PageFooter) rectangle (\the\paperwidth, 0);
-      \draw[WMGreen,ultra thick] (0,\PageFooter) -- ++(\the\paperwidth,0.0);
-      \fill[color=WMGreen] (\the\paperwidth,0) -- ++(0,\PageFooter) -- ++(-1.75*\PageFooter,0) -- ++(-\PageFooter/2.,-\PageFooter/2.0) -- ++(\PageFooter/2.,-\PageFooter/2.0) -- ++(1.75*\PageFooter,0);
-    }
+    \draw[WMGreen,ultra thick] (0,\PageFooter) -- ++(\the\paperwidth,0.0);
+    \fill[color=WMGreen] (\the\paperwidth,0) -- ++(0,\PageFooter) -- ++(-1.75*\PageFooter,0) -- ++(-\PageFooter/2.,-\PageFooter/2.0) -- ++(\PageFooter/2.,-\PageFooter/2.0) -- ++(1.75*\PageFooter,0);
   }
+  
   %% Before we leave, flip the state. This will be flipped again next time
   %% this is called.
   \global\togglefalse{istitlepage}
   \global\togglefalse{ispartpage}
+  \global\togglefalse{isbackuppage}
+  \global\togglefalse{iscrestpage}
   \end{tikzpicture}
 }
 
@@ -122,7 +178,7 @@
     \fi
   \end{beamercolorbox}
   \vfill
-  \vspace{\PageMargin}
+  \vspace{\PlainFrameBarHeight}
 \end{minipage}
 \begin{minipage}[t][\TitlePageTopGraphicHeight][t]{\PageWidthMinusMargins}
 \ \\
@@ -146,7 +202,7 @@
   \end{beamercolorbox}
   \vfill
 %  \Tiny{This material is based upon work supported in part by the National Science Foundation under Grant No. PHY1206053}
-  \vspace{\PageMargin}
+  \vspace{\PlainFrameBarHeight}
 \end{minipage}
 \begin{minipage}[t][\TitlePageBottomHeight][t]{\textwidth}
  \vspace{0.1\TitlePageBottomHeight}\centering
@@ -156,7 +212,7 @@
 %% End title page
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Define the part page
+%% Define the default part page
 \defbeamertemplate*{part page}{WM}[1][]%
 {%
 \global\toggletrue{ispartpage}%
@@ -169,6 +225,60 @@
   \usebeamerfont{frametitle}\insertpart%
 \end{beamercolorbox}%
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the backups page
+\defbeamertemplate*{backups page}{WM}[1][]%
+{%
+\global\toggletrue{isbackuppage}%
+\begin{beamercolorbox}{frametitle}%
+  \begin{center}%
+  \usebeamerfont{frametitle}Backup Slides%
+  \end{center}%
+\end{beamercolorbox}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the backups page
+\defbeamertemplate*{title only page}{WM}[2][]%
+{%
+\global\toggletrue{isbackuppage}%
+\begin{beamercolorbox}{frametitle}%
+  \begin{center}%
+  \usebeamerfont{frametitle}THANK YOU!%
+  \end{center}%
+\end{beamercolorbox}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the footnote rule
+\renewcommand*{\footnoterule}{
+\begin{tikzpicture}%
+  \draw[WMSilver,thick] (0,\PageFooter) -- ++(\the\paperwidth,0.0);%
+\end{tikzpicture}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the footnote theme
+\defbeamertemplate*{footnote}{WM}[1][]%
+{
+  \begin{beamercolorbox}[right]{footnote}%
+  \usebeamerfont{footnote}
+  %\parindent 1em\noindent%
+  %\raggedright
+  \hbox to 1.8em{\hfil\insertfootnotemark}\insertfootnotetext\par%
+  \end{beamercolorbox}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Define the special quote slide
+\defbeamertemplate*{quote slide}{WM}[1]%
+%{%
+%}%
+%[]%
+{%
+\global\toggletrue{iscrestpage}%
+}%
 
 
 \mode

@@ -10,6 +10,7 @@ Due to the fact that LuaLaTeX just handles TTF font files so much better, I
 made it a requirement.  I may fix it in the future so it does not require this.
 
 ## W&M Images
-I do not think I'm allowed to distribute the W&M images, so you will need your
-W&M username and password to download them from the following link:
-http://styleguide.wm.edu/downloads
+I provide lower resolution (rasterized) images suitable for presentations.
+Higher resolution images suitable for things like posters may be aquired from
+the W&M Auxiliary Services. This can be done on their website which may require
+an active W&M username and password: http://styleguide.wm.edu/downloads
