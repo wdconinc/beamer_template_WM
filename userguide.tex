@@ -1,35 +1,30 @@
-% !TEX program = lualalatex
-\documentclass[xcolor=table,compress,pdfpagelabels]{beamer}
+% !TEX program = lualatex
+\documentclass[xcolor=table,compress,professionalfonts,pdfpagelabels]{beamer}
 
-\newcommand{\thisDocumentVersion}{0.2}
+\newcommand{\thisDocumentVersion}{1.0}
 
 %%----------- CONFIGURE BEAMER ------------%%
 \mode<presentation> {
   \usetheme[numberbyframe]{WM}
 }
 
-\author{Juan Carlos Cornejo}
-\title{W\&M Beamer Theme User Guide}
+\author{Juan Carlos Cornejo PhD'16 \\ Wouter Deconinck, Physics}
+\title{W\&M Beamer Theme}
 \subtitle{Version: \thisDocumentVersion}
-\institute{The College of William \& Mary}
-\date{March 12, 2015}
+\institute{William \& Mary}
+\date{\today}
 
 \begin{document}
 
-\begin{frame}[plain]
- \titlepage
+\begin{frame}
+  \titlepage
 \end{frame}
 
-%\begin{frame}{Guide Outline}
-%  \tableofcontents
-%\end{frame}
+\begin{frame}{Guide Outline}
+  \tableofcontents
+\end{frame}
 
 \section{Introduction}
-\begin{frame}{Introduction}
-\begin{center}
-\end{center}
-\end{frame}
-
 \begin{quoteframe}{Why use this theme?}
 William \& Mary's distinction as a leader in American education is over 300 years strong. Growth of the William \& Mary brand in the 21st century requires consistent and thoughtful stewardship of university visuals.\\
 \ \hfill--W\&M Styleguide 1.0
@@ -39,7 +34,7 @@ William \& Mary's distinction as a leader in American education is over 300 year
 \begin{enumerate}
   \item First, get a copy of the theme from the GitHub page
   \begin{itemize}
-    \item https://github.com/leadmocha/beamer\_template\_WM
+    \item https://github.com/wdconinc/beamer\_template\_WM
   \end{itemize}
   \item Extract the contents in the base of your LaTeX project
   \item Select the theme in your preamble
@@ -55,6 +50,7 @@ William \& Mary's distinction as a leader in American education is over 300 year
 \end{enumerate}
 \end{frame}
 
+\section{Page Numbers}
 \begin{frame}[fragile]{Frame vs Page Numbers}
 Beamer allows transitions, which begs the question...\\
 \begin{block}{}
@@ -73,6 +69,7 @@ This is Frame \alert{1} Page \alert{\only<1>{1}\only<2>{2}}.
 \end{example}
 \end{frame}
 
+\section{Special Slides}
 \begin{frame}[fragile]{Special Slides}
  A slide with half content half W\&M Crest:
   \begin{verbatim}

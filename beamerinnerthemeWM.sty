@@ -159,7 +159,7 @@
 \begin{minipage}[c][\TitlePageTopTitleHeight][c]{\PageWidthMinusMargins}
   \vfill
   \vskip0.25em
-  \pgfmathparse{\textwidth/\widthof{\inserttitle}}
+  \pgfmathparse{\textwidth/\pgfmath@calc@widthof{\inserttitle}}
   \begin{beamercolorbox}[center]{title page header}
   \ifdimgreater{\pgfmathresult pt}{1 pt}{
     {\usebeamerfont{title}\inserttitle}%

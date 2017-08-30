@@ -49,8 +49,8 @@
   %% we have to check for this value ourselves now
   \pgfmathsetmacro{\localTitleLineWidth}{\textwidth}
   \pgfmathsetmacro{\localTitleContinuationWidth}{\beamer@autobreakcount>0?
-      \widthof{\space\insertcontinuationcountroman} : 0.0}
-  \pgfmathsetmacro{\localTitleWidth}{\widthof{\beamer@frametitle}+\localTitleContinuationWidth}
+      \pgfmath@calc@widthof{\space\insertcontinuationcountroman} : 0.0}
+  \pgfmathsetmacro{\localTitleWidth}{\pgfmath@calc@widthof{\beamer@frametitle}+\localTitleContinuationWidth}
   %\settowidth{\localTitleBaseWidth}{\expandafter{\romannumeral-`X}\usebeamertemplate*{frametitle continuation}}
   %\fi}
   %% Perform some computations
